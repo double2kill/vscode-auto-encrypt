@@ -11,14 +11,18 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:markdown"
+        "*"
     ],
     "main": "./out/extension",
     "contributes": {
         "commands": [
             {
+                "command": "auto-encrypt.encrypt",
+                "title": "encrypt current file"
+            },
+            {
                 "command": "auto-encrypt.decrypt",
-                "title": "decrypt ?"
+                "title": "decrypt current file"
             }
         ]
     },

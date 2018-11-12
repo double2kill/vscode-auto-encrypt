@@ -1,22 +1,27 @@
 'use strict';
 
 import * as vscode from 'vscode';
-var AES = require("crypto-js/aes");
-var enc_utf8 = require("crypto-js/enc-utf8");
 import fs = require('fs');
+const AES = require("crypto-js/aes");
+const enc_utf8 = require("crypto-js/enc-utf8");
 
-export default (textEditor: vscode.TextEditor) => {
-		// Prevent run command without active TextEditor
-		if (!vscode.window.activeTextEditor) {
-			return null;
-		}
+export function decryptCurrentEditor (textEditor: vscode.TextEditor) {
 
-		const document = vscode.window.activeTextEditor.document;
-		const filepath = document.uri.fsPath;
-    const urlFormatted = filepath.replace(/\\/g, '/');
-    const uri = urlFormatted.replace(/.encrypt$/, '');
-    const origin_text = document.getText();
-    const bytes = AES.decrypt(origin_text,'1111');
-    const originalText = bytes.toString(enc_utf8);
-    fs.writeFileSync(uri, originalText);
+  // Prevent run command without active TextEditor
+  if (!vscode.window.activeTextEditor) {
+    return null;
+  }
+
+  const document = vscode.window.activeTextEditor.document;
+  const filePath = document.uri.fsPath;
+  const urlFormatted = filePath.replace(/\\/g, '/');
+  let uri = urlFormatted.replace(/.encrypt$/, '');
+  const originalText = decryptTextDoc(document);
+  fs.writeFileSync(uri, originalText);
+}
+
+export function decryptTextDoc (TextDocument: vscode.TextDocument) {
+  const origin_text = TextDocument.getText();
+  const bytes = AES.decrypt(origin_text, '1111');
+  return bytes.toString(enc_utf8);
 }
