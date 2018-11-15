@@ -15,6 +15,17 @@
     ],
     "main": "./out/extension",
     "contributes": {
+        "configuration": {
+			"type": "object",
+			"title": "auto-encrypt config",
+			"properties": {
+				"auto-encrypt.password": {
+					"type": "string",
+					"default": "123456",
+					"description": "set your auto-encrypt password"
+				}
+			}
+	    },
         "commands": [
             {
                 "command": "auto-encrypt.encrypt",

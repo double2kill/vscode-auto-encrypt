@@ -3,26 +3,29 @@
 import * as vscode from 'vscode';
 import fs = require('fs');
 var AES = require("crypto-js/aes");
-var enc_utf8 = require("crypto-js/enc-utf8");
+import { isEncryptFile } from '../helper';
 
-export default (textEditor: vscode.TextEditor) => {
+export default async (event: vscode.TextDocumentWillSaveEvent) => {
 
-  // Prevent run command without active TextEditor
-  if (!vscode.window.activeTextEditor) {
-    return null;
-  }
+  const { password } = vscode.workspace.getConfiguration('auto-encrypt');
 
-  const document = textEditor.document;
+  const document = event.document;
   const filePath = document.uri.fsPath;
   const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
   const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filePath;
+  if (isEncryptFile(filePath)) {
+    // 是加密文件则不处理
+    return;
+  }
+
   const urlFormatted = filePath.replace(/\\/g, '/');
   const lastPart = urlFormatted.split('/').pop();
   const encrypt_uri = workspace + '\\' + lastPart + '.encrypt';
+
   const origin_text = document.getText();
-  const encrypt_text = AES.encrypt(origin_text,'1111').toString();
-  const bytes   = AES.decrypt('U2FsdGVkX1/LMpvJrnD3ukmAfC1Um33SQXj7Tm2O7f0=','11121');
-  var originalText = bytes.toString(enc_utf8);
-  console.log(originalText);
+  const encrypt_text = AES.encrypt(origin_text, password).toString();
   fs.writeFileSync(encrypt_uri, encrypt_text);
+
+  const text = await vscode.workspace.openTextDocument(encrypt_uri);
+  vscode.window.showTextDocument(text);
 };

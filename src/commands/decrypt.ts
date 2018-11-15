@@ -21,7 +21,8 @@ export function decryptCurrentEditor (textEditor: vscode.TextEditor) {
 }
 
 export function decryptTextDoc (TextDocument: vscode.TextDocument) {
+  const { password } = vscode.workspace.getConfiguration('auto-encrypt');
   const origin_text = TextDocument.getText();
-  const bytes = AES.decrypt(origin_text, '1111');
+  const bytes = AES.decrypt(origin_text, password);
   return bytes.toString(enc_utf8);
 }
