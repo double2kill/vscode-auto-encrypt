@@ -16,16 +16,16 @@
     "main": "./out/extension",
     "contributes": {
         "configuration": {
-			"type": "object",
-			"title": "auto-encrypt config",
-			"properties": {
-				"auto-encrypt.password": {
-					"type": "string",
-					"default": "123456",
-					"description": "set your auto-encrypt password"
-				}
-			}
-	    },
+            "type": "object",
+            "title": "auto-encrypt config",
+            "properties": {
+                "auto-encrypt.password": {
+                    "type": "string",
+                    "default": "123456",
+                    "description": "set your auto-encrypt password"
+                }
+            }
+        },
         "commands": [
             {
                 "command": "auto-encrypt.encrypt",
@@ -53,6 +53,7 @@
         "vscode": "^1.1.21"
     },
     "dependencies": {
+        "@types/fs-extra": "^5.0.4",
         "crypto-js": "^3.1.9-1"
     }
 }

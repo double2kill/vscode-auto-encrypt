@@ -5,3 +5,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 - Initial release
+
+## [v0.0.1] - 2018-11-16
+
+### Added
+- auto encrypt when a secret file save
+- auto decrypt when a secret file open

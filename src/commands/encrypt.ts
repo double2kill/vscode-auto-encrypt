@@ -28,4 +28,5 @@ export default async (event: vscode.TextDocumentWillSaveEvent) => {
 
   const text = await vscode.workspace.openTextDocument(encrypt_uri);
   vscode.window.showTextDocument(text);
+
 };

@@ -1,65 +1,38 @@
-# auto-encrypt README
+# auto-encrypt
 
-This is the README for your extension "auto-encrypt". After writing up a brief description, we recommend including the following sections.
+auto encrypt secret files to encrypted files. you can push encrypted files to github.
+
+# Motivation
+
+There are some auth settings in my nodejs server, I need to settings auth settings files in `.gitignore` file and copy these file to other computer through safe ways. This step is very troublesome especially when these secret files updated.
 
 ## Features
+* **auto encrypt when a secret file save**
+* **auto decrypt when a secret file open**
+* read your encrypt password in user settings
+* setting your secret files in `.encryptrc`(only one file in v0.0.1)
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
-
-## Requirements
-
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+![Usage](images/auto-encrypt.gif)
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+*user settings*:
+* `auto-encrypt.password`: auto-encrypt password.
 
-For example:
+*example: **settings.json** file in vscode extension user settings*
+```
+{
+  ...,
+  "auto-encrypt.password": "123456",
+}
+```
 
-This extension contributes the following settings:
+*file settings*
+* `.encryptrc`: set a file to a secret file that considered as target file by auto-encrypt extension
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+*example: **.encryptrc** file in workspace root folder*
+```
+password.js
+```
 
 **Enjoy!**
