@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 - Initial release
 
+## [v0.0.2] - 2018-11-27
+### fix
+
+- downgrade `event-stream@3.3.4` to remove package [`flatmap-stream`](https://github.com/dominictarr/event-stream/issues/116)
+
 ## [v0.0.1] - 2018-11-16
 
 ### Added
