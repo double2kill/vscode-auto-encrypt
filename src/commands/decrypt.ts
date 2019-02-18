@@ -26,3 +26,19 @@ export function decryptTextDoc (TextDocument: vscode.TextDocument) {
   const bytes = AES.decrypt(origin_text, password);
   return bytes.toString(enc_utf8);
 }
+
+export async function decryptTextByFileName (fileName: string) {
+  const encryptText = await fs.readFileSync(fileName, {
+    encoding:'utf-8'
+  });
+  const { password } = vscode.workspace.getConfiguration('auto-encrypt');
+  const origin_text = encryptText;
+  const bytes = AES.decrypt(origin_text, password);
+  return bytes.toString(enc_utf8);
+}
+
+export function decryptText (text: String) {
+  const { password } = vscode.workspace.getConfiguration('auto-encrypt');
+  const bytes = AES.decrypt(text, password);
+  return bytes.toString(enc_utf8);
+}

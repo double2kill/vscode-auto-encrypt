@@ -1,5 +1,6 @@
 
 import * as vscode from 'vscode';
+import * as fs from "fs";
 
 export function isEncryptFile (filePath: string) {
   return /.encrypt$/.test(filePath);
@@ -18,15 +19,15 @@ export async function isTargetFile (TextDocument: vscode.TextDocument) {
   // NOTE .encryptrc格式要和.gitignore相同, 后期考虑增强格式
   let encryptrc;
   try {
-    encryptrc = await vscode.workspace.openTextDocument(workspace + '\\.encryptrc');
+    encryptrc = fs.readFileSync(workspace + '\\.encryptrc', {
+      encoding:'utf-8'
+  });
   } catch (e) {
     // 文件不存在，不处理，啥都不做
     return false;
   }
 
   const { fileName } = TextDocument;
-
-  encryptrc = encryptrc.getText();
 
   // TODO 处理文件
 

@@ -1,11 +1,16 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as fs from "fs-extra";
+import * as fs from "fs";
 import * as vscode from 'vscode';
-import { decryptCurrentEditor, decryptTextDoc } from './commands/decrypt';
-import { isTargetFile } from './helper';
+import { decryptCurrentEditor, decryptTextDoc, decryptText } from './commands/decrypt';
+import { isTargetFile, isEncryptFile } from './helper';
 import encrypt from './commands/encrypt';
+// import { showPreviewPanel } from './components/previewPanel';
+import { endsWith } from 'ramda';
+import { ReadonlyFileProvider } from './providers/ReadonlyFile';
+import { Uri, commands } from 'vscode';
+import * as R from 'ramda';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -23,7 +28,27 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     vscode.workspace.onDidOpenTextDocument(async TextDocument => {
+
         const { fileName } = TextDocument;
+
+        console.log(fileName);
+
+        if(endsWith('.encrypt', fileName)) {
+            // const text = decryptTextDoc(TextDocument);
+            const right = Uri.parse('readonlyFile:///' + fileName);
+            const getPath = R.pipe(
+                R.split('.encrypt'),
+                R.dropLast(1),
+                R.join('/')
+            );
+
+            const originPath = getPath(fileName);
+            const left = Uri.parse('file:///' + originPath);
+
+            commands.executeCommand('vscode.diff', left, right, 'a.js <-> a.js.encrypt(decrypt)', {preview: false});
+            // showPreviewPanel(text);
+            return;
+        }
 
         if (!await isTargetFile(TextDocument)) {
             return;
@@ -31,12 +56,14 @@ export function activate(context: vscode.ExtensionContext) {
 
         let encryptText;
         try {
-            encryptText = await vscode.workspace.openTextDocument(fileName + '.encrypt');
+            encryptText = await fs.readFileSync(fileName + '.encrypt', {
+                encoding:'utf-8'
+            });
         } catch (e) {
             // 文件不存在，不处理，啥都不做
             return;
         }
-        const text = decryptTextDoc(encryptText);
+        const text = decryptText(encryptText);
 
         if (text === TextDocument.getText()) {
             // 如果文件没有变化，就不要折腾那么多了
@@ -53,6 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(onCommand_1);
     context.subscriptions.push(onCommand_2);
     context.subscriptions.push(onSave);
+    context.subscriptions.push(new ReadonlyFileProvider());
 
 }
 
