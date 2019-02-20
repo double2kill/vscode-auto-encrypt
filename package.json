@@ -2,7 +2,7 @@
     "name": "auto-encrypt",
     "displayName": "auto-encrypt",
     "description": "auto encrypt/decrypt file",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "double2kill",
     "engines": {
         "vscode": "^1.28.0"

@@ -35,3 +35,7 @@ export async function isTargetFile (TextDocument: vscode.TextDocument) {
 
   return regEx.test(fileName);
 }
+
+export function getOriginFile(filePath: string) {
+
+}

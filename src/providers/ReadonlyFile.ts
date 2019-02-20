@@ -80,7 +80,8 @@ export class ReadonlyFileProvider implements FileSystemProvider, Disposable {
       return tmpUint8Array;
     }
     const { fsPath } = uri;
-    const data = await decryptTextByFileName(fsPath);
+
+    const data = await decryptTextByFileName(fsPath + '.encrypt');
     return stringToUint8Array(data);
   }
 

@@ -2,15 +2,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as fs from "fs";
+import * as path from "path";
 import * as vscode from 'vscode';
-import { decryptCurrentEditor, decryptTextDoc, decryptText } from './commands/decrypt';
-import { isTargetFile, isEncryptFile } from './helper';
+import { decryptCurrentEditor, decryptText } from './commands/decrypt';
+import { isTargetFile } from './helper';
 import encrypt from './commands/encrypt';
 // import { showPreviewPanel } from './components/previewPanel';
 import { endsWith } from 'ramda';
 import { ReadonlyFileProvider } from './providers/ReadonlyFile';
 import { Uri, commands } from 'vscode';
-import * as R from 'ramda';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -35,17 +35,19 @@ export function activate(context: vscode.ExtensionContext) {
 
         if(endsWith('.encrypt', fileName)) {
             // const text = decryptTextDoc(TextDocument);
-            const right = Uri.parse('readonlyFile:///' + fileName);
-            const getPath = R.pipe(
-                R.split('.encrypt'),
-                R.dropLast(1),
-                R.join('/')
+
+            let { dir, name } = path.parse(fileName);
+            const originFileName = dir + '/' + name;
+
+            const right = Uri.parse('readonlyFile:///' + originFileName);
+            const left = Uri.parse('file:///' + originFileName);
+
+            commands.executeCommand('vscode.diff',
+              left,
+              right,
+              `${name} <-> ${name}.encrypt(decrypt)`,
+              {preview: false}
             );
-
-            const originPath = getPath(fileName);
-            const left = Uri.parse('file:///' + originPath);
-
-            commands.executeCommand('vscode.diff', left, right, 'a.js <-> a.js.encrypt(decrypt)', {preview: false});
             // showPreviewPanel(text);
             return;
         }
