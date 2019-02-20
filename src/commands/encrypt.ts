@@ -26,7 +26,4 @@ export default async (event: vscode.TextDocumentWillSaveEvent) => {
   const encrypt_text = AES.encrypt(origin_text, password).toString();
   fs.writeFileSync(encrypt_uri, encrypt_text);
 
-  const text = await vscode.workspace.openTextDocument(encrypt_uri);
-  vscode.window.showTextDocument(text);
-
 };

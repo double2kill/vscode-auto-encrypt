@@ -3,8 +3,10 @@ All notable changes to the "auto-encrypt" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [v0.0.3] - 2019-2-14
-### open decrypt file in the right panel when a encrypt is opened
+## [v0.0.3] - 2019-2-20
+### add: open a diff file when a encrypt file is opened
+### remove: remove auto open .encrypt file
+
 
 ## [v0.0.2] - 2018-11-27
 ### fix
