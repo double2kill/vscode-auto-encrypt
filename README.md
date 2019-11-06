@@ -6,6 +6,11 @@ auto encrypt secret files to encrypted files. you can push encrypted files to gi
 
 update `auto-encrypt@0.0.2`
 
+## [v0.0.4] - 2019-11-6
+### fix
+
+- extension can not run in mac os system [#1](https://github.com/double2kill/vscode-auto-encrypt/issues/1)
+
 ## [v0.0.2] - 2018-11-27
 ### fix
 
