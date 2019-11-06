@@ -5,10 +5,9 @@ import * as fs from "fs";
 import * as path from "path";
 import * as vscode from 'vscode';
 import { decryptCurrentEditor, decryptText } from './commands/decrypt';
-import { isTargetFile } from './helper';
+import { isTargetFile, isEncryptFile } from './helper';
 import encrypt from './commands/encrypt';
 // import { showPreviewPanel } from './components/previewPanel';
-import { endsWith } from 'ramda';
 import { ReadonlyFileProvider } from './providers/ReadonlyFile';
 import { Uri, commands } from 'vscode';
 
@@ -19,7 +18,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     let onCommand_1 = vscode.commands.registerCommand('auto-encrypt.decrypt', decryptCurrentEditor);
     let onCommand_2 = vscode.commands.registerCommand('auto-encrypt.encrypt', encrypt);
-
     const onSave = vscode.workspace.onWillSaveTextDocument(async (event: vscode.TextDocumentWillSaveEvent) => {
         if (!await isTargetFile(event.document)) {
             return;
@@ -33,19 +31,21 @@ export function activate(context: vscode.ExtensionContext) {
 
         console.log(fileName);
 
-        if(endsWith('.encrypt', fileName)) {
+        if(isEncryptFile(fileName)) {
             // const text = decryptTextDoc(TextDocument);
 
-            let { dir, name } = path.parse(fileName);
-            const originFileName = dir + '/' + name;
+            const nameWithoutExt = path.basename(fileName, '.encrypt');
+            const dir = path.dirname(fileName);
+            const originFileName = path.join(dir, nameWithoutExt);
 
-            const right = Uri.parse('readonlyFile:///' + originFileName);
-            const left = Uri.parse('file:///' + originFileName);
+            const right = Uri.file(fileName);
+            const left = Uri.file(originFileName);
 
+            // https://code.visualstudio.com/api/references/commands
             commands.executeCommand('vscode.diff',
               left,
               right,
-              `${name} <-> ${name}.encrypt(decrypt)`,
+              `${nameWithoutExt} <-> ${nameWithoutExt}.encrypt(decrypt)`,
               {preview: false}
             );
             // showPreviewPanel(text);
@@ -73,10 +73,10 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         await fs.writeFileSync(fileName, text);
+        
+        const basename = path.basename(fileName);
 
-        const smallFileName = fileName.replace(/\\/g, '/').split('/').pop();
-
-        vscode.window.showInformationMessage(`file has been changed because ./${smallFileName}.encrypt has been changed`);
+        vscode.window.showInformationMessage(`file has been changed because ./${basename}.encrypt has been changed`);
     });
 
     context.subscriptions.push(onCommand_1);

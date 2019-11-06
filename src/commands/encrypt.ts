@@ -1,9 +1,11 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import * as path from 'path';
 import fs = require('fs');
-var AES = require("crypto-js/aes");
 import { isEncryptFile } from '../helper';
+
+const AES = require("crypto-js/aes");
 
 export default async (event: vscode.TextDocumentWillSaveEvent) => {
 
@@ -17,10 +19,8 @@ export default async (event: vscode.TextDocumentWillSaveEvent) => {
     // 是加密文件则不处理
     return;
   }
-
-  const urlFormatted = filePath.replace(/\\/g, '/');
-  const lastPart = urlFormatted.split('/').pop();
-  const encrypt_uri = workspace + '\\' + lastPart + '.encrypt';
+  const filename = path.basename(filePath);
+  const encrypt_uri = path.join(workspace, filename + '.encrypt');
 
   const origin_text = document.getText();
   const encrypt_text = AES.encrypt(origin_text, password).toString();
