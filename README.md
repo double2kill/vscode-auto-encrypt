@@ -18,7 +18,7 @@ update `auto-encrypt@0.0.2`
 
 # Motivation
 
-There are some auth settings in my nodejs server, I need to settings auth settings files in `.gitignore` file and copy these file to other computer through safe ways. This step is very troublesome especially when these secret files updated.
+There are some auth settings in my server, I need to set auth files into `.gitignore` file and copy these file to other computer through safe ways. It is very troublesome to copy files especially when these secret files updated. Just want to publish encrypt files to github and decrypt them when I want to use.
 
 ## Features
 * **auto encrypt when a secret file save**

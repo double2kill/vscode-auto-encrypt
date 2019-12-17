@@ -3,6 +3,15 @@ All notable changes to the "auto-encrypt" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [v0.0.5] - To be deployed
+### add: Preview diff for raw file and decrypt file
+### update: CHANGELOG and README
+
+## [v0.0.4] - 2019-11-6
+### fix
+
+- extension can not run in mac os system [#1](https://github.com/double2kill/vscode-auto-encrypt/issues/1)
+
 ## [v0.0.3] - 2019-2-20
 ### add: open a diff file when a encrypt file is opened
 ### remove: remove auto open .encrypt file
