@@ -10,6 +10,7 @@ import encrypt from './commands/encrypt';
 // import { showPreviewPanel } from './components/previewPanel';
 import { ReadonlyFileProvider } from './providers/ReadonlyFile';
 import { Uri, commands } from 'vscode';
+import { DocumentSchemes } from "./constants";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -38,8 +39,8 @@ export function activate(context: vscode.ExtensionContext) {
             const dir = path.dirname(fileName);
             const originFileName = path.join(dir, nameWithoutExt);
 
-            const right = Uri.file(fileName);
             const left = Uri.file(originFileName);
+            const right = Uri.parse(`${DocumentSchemes.ReadonlyFile}://${originFileName}`);
 
             // https://code.visualstudio.com/api/references/commands
             commands.executeCommand('vscode.diff',

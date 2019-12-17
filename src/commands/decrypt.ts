@@ -28,13 +28,18 @@ export function decryptTextDoc (TextDocument: vscode.TextDocument) {
 }
 
 export async function decryptTextByFileName (fileName: string) {
-  const encryptText = await fs.readFileSync(fileName, {
-    encoding:'utf-8'
-  });
-  const { password } = vscode.workspace.getConfiguration('auto-encrypt');
-  const origin_text = encryptText;
-  const bytes = AES.decrypt(origin_text, password);
-  return bytes.toString(enc_utf8);
+  try {
+    const encryptText = await fs.readFileSync(fileName, {
+      encoding:'utf-8'
+    });
+    const { password } = vscode.workspace.getConfiguration('auto-encrypt');
+    const origin_text = encryptText;
+    const bytes = AES.decrypt(origin_text, password);
+    return bytes.toString(enc_utf8);
+  }
+  catch(e) {
+    return `File seems corrupted or your password is wrong`;
+  }
 }
 
 export function decryptText (text: String) {

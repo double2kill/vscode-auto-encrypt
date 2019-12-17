@@ -11,13 +11,14 @@ import {
   workspace
 } from 'vscode';
 import { decryptTextByFileName } from '../commands/decrypt';
+import { DocumentSchemes } from '../constants';
 
 export class ReadonlyFileProvider implements FileSystemProvider, Disposable {
   private readonly _disposable: Disposable;
 
   constructor() {
       this._disposable = Disposable.from(
-          workspace.registerFileSystemProvider('readonlyFile', this, {
+          workspace.registerFileSystemProvider(DocumentSchemes.ReadonlyFile, this, {
               isCaseSensitive: true,
               isReadonly: true
           })
