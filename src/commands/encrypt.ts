@@ -13,14 +13,13 @@ export default async (event: vscode.TextDocumentWillSaveEvent) => {
 
   const document = event.document;
   const filePath = document.uri.fsPath;
-  const workspaceFolder = vscode.workspace.getWorkspaceFolder(document.uri);
-  const workspace = workspaceFolder ? workspaceFolder.uri.fsPath : filePath;
   if (isEncryptFile(filePath)) {
     // 是加密文件则不处理
     return;
   }
   const filename = path.basename(filePath);
-  const encrypt_uri = path.join(workspace, filename + '.encrypt');
+  const dirname = path.dirname(filePath);
+  const encrypt_uri = path.join(dirname, filename + '.encrypt');
 
   const origin_text = document.getText();
   const encrypt_text = AES.encrypt(origin_text, password).toString();

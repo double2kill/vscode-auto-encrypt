@@ -2,6 +2,7 @@
 import * as vscode from 'vscode';
 import * as fs from "fs";
 import * as path from 'path';
+import * as micromatch from 'micromatch'
 
 export function isEncryptFile (filePath: string): boolean {
   return path.extname(filePath) === '.encrypt';
@@ -28,14 +29,15 @@ export async function isTargetFile (TextDocument: vscode.TextDocument) {
     // 文件不存在，不处理，啥都不做
     return false;
   }
-
+  const targetFiles = encryptrc.split('\n')
+    .map(item => item.trim())
+    .filter(item => !!item);
+  
   const { fileName } = TextDocument;
+  const relativePath = path.relative(workspace, fileName);
+  const a = micromatch([relativePath], targetFiles, { basename: true });
 
-  // TODO 处理文件
-
-  const regEx = new RegExp(`${encryptrc}$`);
-
-  return regEx.test(fileName);
+  return a.length;
 }
 
 export function getOriginFile(filePath: string) {
