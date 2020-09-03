@@ -38,8 +38,23 @@
             {
                 "command": "auto-encrypt.decrypt",
                 "title": "decrypt current file"
+            },
+            {
+                "command": "auto-encrypt.showDiff",
+                "title": "Show Encrypt Diff",
+                "icon": {
+                    "dark": "images/icon/dark/diff.svg",
+                    "light": "images/icon/light/diff.svg"
+                }
             }
-        ]
+        ],
+        "menus": {
+            "editor/title": [{
+                "command": "auto-encrypt.showDiff",
+                "alt": "auto-encrypt.showDiff",
+                "group": "navigation"
+            }]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
